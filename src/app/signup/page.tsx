@@ -1,10 +1,10 @@
 "use client";
 
-import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { signupUser } from "@/actions/signupUser.action";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -16,14 +16,18 @@ export default function SignupPage() {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.post("/api/users/signup", user);
-      toast.success("Signup Successful");
-      router.push("/login");
+      const res = await signupUser(user);
+      if (res.error) {
+        toast.error(res.error);
+      } else {
+        toast.success("Signup Successful");
+        router.push("/login");
+      }
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.error || err.message);
-      } else if (err instanceof Error) {
+      if (err instanceof Error) {
         toast.error(err.message);
+      } else {
+        toast.error("An unknown error occurred");
       }
     } finally {
       setLoading(false);
@@ -87,7 +91,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={isBtnDisabled || loading}
-            className="mt-2 w-full bg-black text-white rounded-md py-2.5 text-sm font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            className="mt-2 w-full bg-black text-white rounded-md py-2.5 text-sm font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors cursor-pointer"
           >
             {loading ? "Signing up..." : "Sign up"}
           </button>

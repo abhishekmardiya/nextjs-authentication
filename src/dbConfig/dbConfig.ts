@@ -1,14 +1,55 @@
+/* This code ensures an efficient MongoDB connection in a Next.js app by caching the connection globally to prevent multiple connections.
+ */
+
+import type { Mongoose } from "mongoose";
 import mongoose from "mongoose";
 
-export async function connect() {
-  try {
-    mongoose.connect(process.env.MONGO_URI || "");
-    const connection = mongoose.connection;
+const MONGODB_URI = (process.env.MONGO_URI || "") as string;
 
-    connection.on("connected", () => {});
-
-    connection.on("error", () => {
-      process.exit();
-    });
-  } catch (_err) {}
+if (!MONGODB_URI) {
+  throw new Error("MONGODB_URI is not defined");
 }
+
+interface MongooseCache {
+  conn: Mongoose | null;
+  promise: Promise<Mongoose> | null;
+}
+
+declare global {
+  /* `global.mongoose` is a global variable used to share the connection between different parts of the application. It is used to prevent multiple connections to the same database.
+   */
+
+  // biome-ignore lint/suspicious/noRedeclare: -
+  var mongoose: MongooseCache;
+}
+
+let cached = global?.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+export const connect = async (): Promise<Mongoose> => {
+  if (cached?.conn) {
+    console.log("Using mongoose cached connection");
+
+    return cached.conn;
+  }
+
+  if (!cached?.promise) {
+    cached.promise = (async () => {
+      try {
+        const result = await mongoose.connect(MONGODB_URI);
+
+        console.log("Connected to MongoDB");
+        return result;
+      } catch (error) {
+        console.error("Error connecting to MongoDB", error);
+        throw error;
+      }
+    })();
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
+};

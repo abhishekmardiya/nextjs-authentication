@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken";
-import type { NextRequest } from "next/server";
+import { cookies } from "next/headers";
 
-export const getDataFromToken = (request: NextRequest) => {
+export const getDataFromToken = async () => {
   try {
-    const token = request.cookies.get("token")?.value || "";
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value || "";
     const decodedToken = jwt.verify(
       token,
       process.env.TOKEN_SECRET as string,
@@ -12,5 +13,9 @@ export const getDataFromToken = (request: NextRequest) => {
     };
 
     return decodedToken.id;
-  } catch (_err) {}
+  } catch (err: unknown) {
+    console.error(err instanceof Error ? err.message : "Unknown error");
+
+    return null;
+  }
 };

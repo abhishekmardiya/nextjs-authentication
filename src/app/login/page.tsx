@@ -1,10 +1,10 @@
 "use client";
 
-import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { loginUser } from "@/actions/loginUser.action";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,16 +18,21 @@ export default function LoginPage() {
 
   const onLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       setLoading(true);
-      await axios.post("/api/users/login", user);
-      toast.success("Login Successful");
-      router.push("/profile");
+      const res = await loginUser(user);
+      if (res.error) {
+        toast.error(res.error);
+      } else {
+        toast.success("Login Successful");
+        router.push("/profile");
+      }
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.error || err.message);
-      } else if (err instanceof Error) {
+      if (err instanceof Error) {
         toast.error(err.message);
+      } else {
+        toast.error("An unknown error occurred");
       }
     } finally {
       setLoading(false);
@@ -40,7 +45,10 @@ export default function LoginPage() {
         <h1 className="text-2xl font-semibold mb-6">Sign in</h1>
         <form onSubmit={onLogin} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="email" className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -53,7 +61,10 @@ export default function LoginPage() {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="password" className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -68,14 +79,17 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isBtnDisabled || loading}
-            className="mt-2 w-full bg-black text-white rounded-md py-2.5 text-sm font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            className="mt-2 w-full bg-black text-white rounded-md py-2.5 text-sm font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors cursor-pointer"
           >
             {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
         <div className="mt-6 text-center text-sm text-gray-600">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="text-black font-medium hover:underline">
+          <Link
+            href="/signup"
+            className="text-black font-medium hover:underline"
+          >
             Sign up
           </Link>
         </div>

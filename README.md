@@ -31,6 +31,9 @@ Create a `.env` file based on the `env-sample.txt`:
 MONGO_URI=""
 TOKEN_SECRET=""
 DOMAIN="http://localhost:3000"
+EMAIL_FROM="your-email@example.com"
+MAILTRAP_USER=""
+MAILTRAP_PASS=""
 ```
 
 ### Explanation of variables
@@ -38,6 +41,11 @@ DOMAIN="http://localhost:3000"
 - `MONGO_URI`: **Required**. Your MongoDB connection string. This is used by Mongoose to connect to your database cluster. If you're using MongoDB Atlas, it will look something like `mongodb+srv://<username>:<password>@cluster0...`
 - `TOKEN_SECRET`: **Required**. A secure, random string used as the secret key to sign and verify JSON Web Tokens (JWT). These tokens are used for keeping users logged in securely. You can use any long random string for this.
 - `DOMAIN`: **Required**. The base URL of your application. This is used when constructing absolute URLs, such as the verification link sent to a user's email during signup. During local development, this should be `http://localhost:3000`. In production, set this to your deployed domain (e.g., `https://your-domain.com`).
+- `EMAIL_FROM`: **Required**. The email address that will appear in the "From" field when the application sends emails (e.g., verification emails). This should be configured according to your SMTP provider's settings.
+- `MAILTRAP_USER`: **Required**. The SMTP username provided by your Mailtrap inbox. You can get this by signing up at [Mailtrap](https://mailtrap.io/).
+- `MAILTRAP_PASS`: **Required**. The SMTP password provided by your Mailtrap inbox. You can get this by signing up at [Mailtrap](https://mailtrap.io/).
+
+> **Note**: All outgoing emails (such as verification emails) are routed to Mailtrap. You must log into your Mailtrap account to view these emails and access your verification links.
 
 ## Scripts
 

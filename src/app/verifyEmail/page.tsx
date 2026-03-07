@@ -1,12 +1,15 @@
 "use client";
 
-import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState, Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { verifyEmailAction } from "@/actions/verifyEmailAction.action";
 
 function VerifyEmailContent() {
   const [token, setToken] = useState("");
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "success" | "error">(
+    "loading",
+  );
 
   useEffect(() => {
     const urlToken = window.location.search.split("=")[1];
@@ -16,9 +19,18 @@ function VerifyEmailContent() {
   useEffect(() => {
     const verifyUserEmail = async () => {
       try {
-        await axios.post("/api/users/verifyEmail", { token });
-        setStatus("success");
-      } catch (_err) {
+        const res = await verifyEmailAction({ token });
+        if (res.error) {
+          setStatus("error");
+        } else {
+          setStatus("success");
+        }
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          toast.error(err.message);
+        } else {
+          toast.error("An unknown error occurred");
+        }
         setStatus("error");
       }
     };
