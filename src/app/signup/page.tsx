@@ -8,17 +8,16 @@ import { toast } from "react-hot-toast";
 
 export default function SignupPage() {
   const router = useRouter();
-  const [user, setUser] = useState({
-    username: "",
-    password: "",
-    email: "",
-  });
-  const [isBtnDisabled, setIsBtnDisabled] = useState(false);
+  const [user, setUser] = useState({ username: "", password: "", email: "" });
+  const [isBtnDisabled, setIsBtnDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  const onSignup = async () => {
+  const onSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
+      setLoading(true);
       await axios.post("/api/users/signup", user);
-      toast.success("Signup Successfully");
+      toast.success("Signup Successful");
       router.push("/login");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
@@ -26,86 +25,80 @@ export default function SignupPage() {
       } else if (err instanceof Error) {
         toast.error(err.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (
-      user.email.length > 0 &&
-      user.password.length > 0 &&
-      user.username.length > 0
-    ) {
-      setIsBtnDisabled(false);
-    } else {
-      setIsBtnDisabled(true);
-    }
+    setIsBtnDisabled(
+      !(
+        user.email.length > 0 &&
+        user.password.length > 0 &&
+        user.username.length > 0
+      )
+    );
   }, [user]);
 
   return (
-    <div>
-      <h1 className="text-2xl font-extrabold text-center">Signup</h1>
-      <hr />
-      <article>
-        <section>
-          <label htmlFor="username" className="mr-5">
-            Username :
-          </label>
-          <input
-            className="border border-teal-500 m-1 rounded"
-            type="text"
-            id="username"
-            placeholder="Enter Username"
-            value={user.username}
-            onChange={(e) => setUser({ ...user, username: e.target.value })}
-          />
-        </section>
-        <section>
-          <label htmlFor="email" className="mr-14">
-            Email :
-          </label>
-          <input
-            className="border border-teal-500 m-1 rounded"
-            type="email"
-            id="email"
-            placeholder="Enter Email"
-            value={user.email}
-            onChange={(e) => setUser({ ...user, email: e.target.value })}
-          />
-        </section>
-        <section>
-          <label htmlFor="password" className="mr-5">
-            Password :
-          </label>
-          <input
-            className="border border-teal-500 m-1 rounded"
-            type="password"
-            id="password"
-            placeholder="Enter Password"
-            value={user.password}
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
-          />
-        </section>
-      </article>
-      <section className="flex justify-center">
-        <button
-          type="button"
-          className={`bg-teal-500 border rounded-full p-2 text-white mt-6 m-auto ${
-            isBtnDisabled && "bg-gray-600"
-          }`}
-          onClick={onSignup}
-          disabled={isBtnDisabled}
-        >
-          Signup Here
-        </button>
-      </section>
-      <section className="flex justify-center">
-        <Link
-          href="/login"
-          className="text-teal-300 mt-6 m-auto underline hover:text-blue-300"
-        >
-          Visit Login page
-        </Link>
-      </section>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-900 font-sans p-4">
+      <div className="w-full max-w-sm">
+        <h1 className="text-2xl font-semibold mb-6">Create an account</h1>
+        <form onSubmit={onSignup} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="username" className="text-sm font-medium text-gray-700">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors"
+              placeholder="johndoe"
+              value={user.username}
+              onChange={(e) => setUser({ ...user, username: e.target.value })}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="email" className="text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors"
+              placeholder="name@example.com"
+              value={user.email}
+              onChange={(e) => setUser({ ...user, email: e.target.value })}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="password" className="text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors"
+              placeholder="Create a password"
+              value={user.password}
+              onChange={(e) => setUser({ ...user, password: e.target.value })}
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={isBtnDisabled || loading}
+            className="mt-2 w-full bg-black text-white rounded-md py-2.5 text-sm font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          >
+            {loading ? "Signing up..." : "Sign up"}
+          </button>
+        </form>
+        <div className="mt-6 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link href="/login" className="text-black font-medium hover:underline">
+            Sign in
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
