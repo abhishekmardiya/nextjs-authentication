@@ -1,8 +1,8 @@
 "use client";
 
-import { logoutUser } from "@/actions/logoutUser.action";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { logoutUser } from "@/actions/logoutUser.action";
 
 export default function LogoutButton() {
   const router = useRouter();
@@ -28,6 +28,7 @@ export default function LogoutButton() {
 
   return (
     <button
+      type="button"
       onClick={logout}
       className="text-sm font-medium text-gray-600 hover:text-black transition-colors cursor-pointer"
     >

@@ -6,10 +6,17 @@ import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const title = "Next.js Authentication";
+const description =
+  "A full-stack Next.js application with authentication, utilizing MongoDB, JSON Web Tokens (JWT), and Nodemailer.";
+
 export const metadata: Metadata = {
-  title: "Next.js Authentication",
-  description:
-    "A full-stack Next.js application with authentication, utilizing MongoDB, JSON Web Tokens (JWT), and Nodemailer. ",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+  },
 };
 
 export default function RootLayout({
@@ -20,8 +27,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
         <Toaster position="top-center" reverseOrder={false} />
+        <Navbar />
         {children}
       </body>
     </html>

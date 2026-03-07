@@ -40,7 +40,7 @@ export default function SignupPage() {
         user.email.length > 0 &&
         user.password.length > 0 &&
         user.username.length > 0
-      )
+      ),
     );
   }, [user]);
 
@@ -50,7 +50,10 @@ export default function SignupPage() {
         <h1 className="text-2xl font-semibold mb-6">Create an account</h1>
         <form onSubmit={onSignup} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="username" className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="username"
+              className="text-sm font-medium text-gray-700"
+            >
               Username
             </label>
             <input
@@ -63,7 +66,10 @@ export default function SignupPage() {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="email" className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -76,7 +82,10 @@ export default function SignupPage() {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="password" className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -98,7 +107,10 @@ export default function SignupPage() {
         </form>
         <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link href="/login" className="text-black font-medium hover:underline">
+          <Link
+            href="/login"
+            className="text-black font-medium hover:underline"
+          >
             Sign in
           </Link>
         </div>

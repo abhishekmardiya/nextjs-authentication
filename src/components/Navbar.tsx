@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { cookies } from "next/headers";
+import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 
 export default async function Navbar() {
@@ -10,9 +10,9 @@ export default async function Navbar() {
     <nav className="fixed top-0 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md z-50">
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link href="/" className="font-semibold text-lg tracking-tight">
-          AuthApp
+          Next.js Authentication
         </Link>
-        
+
         <div className="flex items-center gap-6">
           {token ? (
             <>

@@ -80,31 +80,35 @@ export default function ProfilePage() {
                 {usersData._id || "N/A"}
               </span>
             </div>
-            
+
             <div className="flex justify-between items-center border-b border-gray-100 pb-3">
               <span className="text-gray-500 font-medium">Username</span>
               <span className="font-medium text-gray-900">
                 {usersData.username || "N/A"}
               </span>
             </div>
-            
+
             <div className="flex justify-between items-center border-b border-gray-100 pb-3">
               <span className="text-gray-500 font-medium">Email</span>
               <span className="font-medium text-gray-900">
                 {usersData.email || "N/A"}
               </span>
             </div>
-            
+
             <div className="flex justify-between items-center border-b border-gray-100 pb-3">
               <span className="text-gray-500 font-medium">Status</span>
-              <span className={`font-medium px-2 py-1 rounded-full text-xs ${usersData.isVerified ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
+              <span
+                className={`font-medium px-2 py-1 rounded-full text-xs ${usersData.isVerified ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}
+              >
                 {usersData.isVerified ? "Verified" : "Unverified"}
               </span>
             </div>
-            
+
             <div className="flex justify-between items-center border-b border-gray-100 pb-3">
               <span className="text-gray-500 font-medium">Role</span>
-              <span className={`font-medium px-2 py-1 rounded-full text-xs ${usersData.isAdmin ? "bg-purple-100 text-purple-700" : "bg-gray-100 text-gray-700"}`}>
+              <span
+                className={`font-medium px-2 py-1 rounded-full text-xs ${usersData.isAdmin ? "bg-purple-100 text-purple-700" : "bg-gray-100 text-gray-700"}`}
+              >
                 {usersData.isAdmin ? "Admin" : "User"}
               </span>
             </div>
