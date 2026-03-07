@@ -9,7 +9,10 @@ export default async function Navbar() {
   return (
     <nav className="fixed top-0 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md z-50">
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link href="/" className="font-semibold text-lg tracking-tight">
+        <Link
+          href="/"
+          className="font-bold text-lg tracking-tight text-transparent bg-clip-text bg-linear-to-r from-blue-600 via-purple-500 to-indigo-400 hover:opacity-80 transition-opacity"
+        >
           Next.js Authentication
         </Link>
 

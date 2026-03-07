@@ -1,12 +1,12 @@
 # Next.js Authentication
 
-A full-stack Next.js application with authentication, utilizing MongoDB, JSON Web Tokens (JWT), and Nodemailer. 
+A full-stack Next.js application with authentication, utilizing MongoDB, JSON Web Tokens (JWT), Nodemailer, and Mailtrap.
 
 ## Features
 
 - User Signup & Login
 - User Profile Page
-- Email Verification using Nodemailer
+- Email Verification using Nodemailer and Mailtrap
 - Authentication persistence via HTTP-only cookies
 - Password Hashing using `bcryptjs`
 - Clean UI built with Tailwind CSS

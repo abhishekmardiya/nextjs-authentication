@@ -38,7 +38,9 @@ export const connect = async (): Promise<Mongoose> => {
   if (!cached?.promise) {
     cached.promise = (async () => {
       try {
-        const result = await mongooseModule.connect(MONGODB_URI);
+        const result = await mongooseModule.connect(MONGODB_URI, {
+          dbName: "auth-app",
+        });
 
         console.log("Connected to MongoDB");
         return result;
