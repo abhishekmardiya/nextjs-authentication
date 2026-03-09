@@ -3,7 +3,16 @@
 import { connect } from "@/dbConfig/dbConfig";
 import User from "@/model/userModel";
 
-export async function verifyEmailAction({ token }: { token: string }) {
+interface VerifyEmailActionResponse {
+  success: boolean;
+  message: string;
+}
+
+export async function verifyEmailAction({
+  token,
+}: {
+  token: string;
+}): Promise<VerifyEmailActionResponse> {
   try {
     await connect();
 
@@ -13,7 +22,7 @@ export async function verifyEmailAction({ token }: { token: string }) {
     });
 
     if (!user) {
-      return { error: "Invalid Token" };
+      return { success: false, message: "Invalid Token" };
     }
 
     user.isVerified = true;
@@ -29,6 +38,6 @@ export async function verifyEmailAction({ token }: { token: string }) {
   } catch (err: unknown) {
     console.error(err instanceof Error ? err.message : "Unknown error");
 
-    return { error: "Something went wrong!" };
+    return { success: false, message: "Something went wrong!" };
   }
 }

@@ -4,19 +4,31 @@ import { connect } from "@/dbConfig/dbConfig";
 import { getDataFromToken } from "@/helpers/getDataFromToken";
 import User from "@/model/userModel";
 
-export async function getMe() {
+interface GetMeResponse {
+  success: boolean;
+  message: string;
+  data: {
+    _id: string;
+    username: string;
+    email: string;
+    isVerified: boolean;
+    isAdmin: boolean;
+  } | null;
+}
+
+export const getMe = async (): Promise<GetMeResponse> => {
   try {
     await connect();
 
     const userId = await getDataFromToken();
     if (!userId) {
-      return { error: "Unauthorized" };
+      return { success: false, message: "Unauthorized", data: null };
     }
 
     // select all fields except password from our database
     const user = await User.findOne({ _id: userId }).select("-password").lean();
     if (!user) {
-      return { error: "User not found" };
+      return { success: false, message: "User not found", data: null };
     }
 
     // convert _id to string for serialization
@@ -31,6 +43,6 @@ export async function getMe() {
   } catch (err: unknown) {
     console.error(err instanceof Error ? err.message : "Unknown error");
 
-    return { error: "Something went wrong!" };
+    return { success: false, message: "Something went wrong!", data: null };
   }
-}
+};

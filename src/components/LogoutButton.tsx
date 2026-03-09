@@ -10,10 +10,12 @@ export default function LogoutButton() {
   const logout = async () => {
     try {
       const res = await logoutUser();
+
       if (res.error) {
         toast.error(res.error);
         return;
       }
+
       toast.success("Logged out successfully");
       router.push("/login");
       router.refresh();
