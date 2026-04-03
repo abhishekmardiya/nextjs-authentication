@@ -16,9 +16,9 @@ export const SignUp = () => {
 
     try {
       setLoading(true);
-      const res = await signupUser(user);
-      if (res.error) {
-        toast.error(res.error);
+      const { success, message } = await signupUser(user);
+      if (!success) {
+        toast.error(message);
       } else {
         toast.success("Signup Successful");
         router.push("/login");

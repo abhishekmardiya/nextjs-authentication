@@ -6,7 +6,14 @@ import { cookies } from "next/headers";
 import { connect } from "@/dbConfig/dbConfig";
 import User from "@/model/userModel";
 
-export async function loginUser(user: Record<string, string>) {
+interface LoginUserResponse {
+  success: boolean;
+  message: string;
+}
+
+export async function loginUser(
+  user: Record<string, string>,
+): Promise<LoginUserResponse> {
   try {
     await connect();
 
@@ -15,12 +22,12 @@ export async function loginUser(user: Record<string, string>) {
     const foundUser = await User.findOne({ email });
 
     if (!foundUser) {
-      return { error: "User does not exists" };
+      return { success: false, message: "User does not exists" };
     }
 
     const validPassword = await bcryptjs.compare(password, foundUser.password);
     if (!validPassword) {
-      return { error: "invalid Password" };
+      return { success: false, message: "invalid Password" };
     }
 
     // create token data
@@ -42,6 +49,6 @@ export async function loginUser(user: Record<string, string>) {
   } catch (err: unknown) {
     console.error(err instanceof Error ? err.message : "Unknown error");
 
-    return { error: "Something went wrong!" };
+    return { success: false, message: "Something went wrong!" };
   }
 }

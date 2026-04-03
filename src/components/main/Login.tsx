@@ -16,9 +16,9 @@ export const Login = () => {
 
     try {
       setLoading(true);
-      const res = await loginUser(user);
-      if (res.error) {
-        toast.error(res.error);
+      const { success, message } = await loginUser(user);
+      if (!success) {
+        toast.error(message);
       } else {
         toast.success("Login Successful");
         router.push("/profile");

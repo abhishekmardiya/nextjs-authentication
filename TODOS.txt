@@ -1,3 +1,4 @@
 - Implement 'Forgot Password' and 'Reset Password' features
-- Optimize pages by utilizing Server-Side Rendering (SSR) wherever applicable (page.tsx)
 - Display a prompt requesting email verification after successful user registration
+- add return type to all actions and utils
+- make all named exports

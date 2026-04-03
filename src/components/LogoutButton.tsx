@@ -9,10 +9,10 @@ export default function LogoutButton() {
 
   const logout = async () => {
     try {
-      const res = await logoutUser();
+      const { success, message } = await logoutUser();
 
-      if (res.error) {
-        toast.error(res.error);
+      if (!success) {
+        toast.error(message);
         return;
       }
 

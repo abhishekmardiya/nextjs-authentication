@@ -2,7 +2,12 @@
 
 import { cookies } from "next/headers";
 
-export async function logoutUser() {
+interface LogoutUserResponse {
+  success: boolean;
+  message: string;
+}
+
+export async function logoutUser(): Promise<LogoutUserResponse> {
   try {
     const cookieStore = await cookies();
     cookieStore.delete("token");
@@ -11,6 +16,6 @@ export async function logoutUser() {
   } catch (err: unknown) {
     console.error(err instanceof Error ? err.message : "Unknown error");
 
-    return { error: "Something went wrong!" };
+    return { success: false, message: "Something went wrong!" };
   }
 }

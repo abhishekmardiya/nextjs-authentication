@@ -4,7 +4,11 @@ import { cookies } from "next/headers";
 export const getDataFromToken = async () => {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value || "";
+    const token = cookieStore.get("token")?.value;
+    if (!token) {
+      return null;
+    }
+
     const decodedToken = jwt.verify(
       token,
       process.env.TOKEN_SECRET as string,
@@ -13,9 +17,7 @@ export const getDataFromToken = async () => {
     };
 
     return decodedToken.id;
-  } catch (err: unknown) {
-    console.error(err instanceof Error ? err.message : "Unknown error");
-
+  } catch {
     return null;
   }
 };

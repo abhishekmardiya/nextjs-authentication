@@ -3,18 +3,32 @@
 import { connect } from "@/dbConfig/dbConfig";
 import User from "@/model/userModel";
 
-export async function getUserById(userId: string) {
+interface GetUserByIdResponse {
+  success: boolean;
+  message: string;
+  data: {
+    _id: string;
+    username: string;
+    email: string;
+    isVerified: boolean;
+    isAdmin: boolean;
+  } | null;
+}
+
+export async function getUserById(
+  userId: string,
+): Promise<GetUserByIdResponse> {
   try {
     await connect();
 
     if (!userId) {
-      return { error: "User ID is required" };
+      return { success: false, message: "User ID is required", data: null };
     }
 
     // select all fields except password from our database
     const user = await User.findOne({ _id: userId }).select("-password").lean();
     if (!user) {
-      return { error: "User not found" };
+      return { success: false, message: "User not found", data: null };
     }
 
     // convert _id to string for serialization
@@ -29,6 +43,6 @@ export async function getUserById(userId: string) {
   } catch (err: unknown) {
     console.error(err instanceof Error ? err.message : "Unknown error");
 
-    return { error: "Something went wrong!" };
+    return { success: false, message: "Something went wrong!", data: null };
   }
 }

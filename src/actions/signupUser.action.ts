@@ -6,7 +6,19 @@ import { EmailType } from "@/helpers/enums";
 import { sendEmail } from "@/helpers/mailer";
 import User from "@/model/userModel";
 
-export async function signupUser(user: Record<string, string>) {
+interface SignupUserResponse {
+  success: boolean;
+  message: string;
+  savedUser: {
+    _id: string;
+    username: string;
+    email: string;
+  } | null;
+}
+
+export async function signupUser(
+  user: Record<string, string>,
+): Promise<SignupUserResponse> {
   try {
     await connect();
 
@@ -15,7 +27,11 @@ export async function signupUser(user: Record<string, string>) {
     const foundUser = await User.findOne({ email });
 
     if (foundUser) {
-      return { error: "User already exists" };
+      return {
+        success: false,
+        message: "User already exists",
+        savedUser: null,
+      };
     }
 
     // hashing
@@ -49,6 +65,10 @@ export async function signupUser(user: Record<string, string>) {
   } catch (err: unknown) {
     console.error(err instanceof Error ? err.message : "Unknown error");
 
-    return { error: "Something went wrong!" };
+    return {
+      success: false,
+      message: "Something went wrong!",
+      savedUser: null,
+    };
   }
 }
