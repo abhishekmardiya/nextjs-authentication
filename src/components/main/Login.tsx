@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -77,6 +78,14 @@ export const Login = () => {
           value={user.password}
           onChange={(e) => setUser({ ...user, password: e.target.value })}
         />
+        <div className="text-right">
+          <Link
+            href="/forgotPassword"
+            className="text-sm text-black font-medium hover:underline"
+          >
+            Forgot password?
+          </Link>
+        </div>
       </div>
       <button
         type="submit"

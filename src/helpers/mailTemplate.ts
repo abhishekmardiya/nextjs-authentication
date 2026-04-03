@@ -5,6 +5,10 @@ export function getMailTemplate(
   domain: string,
   hashedToken: string,
 ): string {
+  const basePath =
+    emailType === EmailType.VERIFY ? "verifyEmail" : "resetPassword";
+  const actionUrl = `${domain}/${basePath}?token=${encodeURIComponent(hashedToken)}`;
+
   return `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 10px; background-color: #fafafa;">
           <div style="background-color: #ffffff; padding: 30px; border-radius: 8px; text-align: center;">
@@ -18,14 +22,14 @@ export function getMailTemplate(
                   : "We received a request to reset your password. Click the button below to choose a new one."
               }
             </p>
-            <a href="${domain}/verifyEmail?token=${hashedToken}" 
+            <a href="${actionUrl}" 
                style="background-color: #000000; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px; display: inline-block;">
               ${emailType === EmailType.VERIFY ? "Verify Email" : "Reset Password"}
             </a>
             <p style="color: #888888; font-size: 14px; margin-top: 30px; line-height: 1.5;">
               Or copy and paste this link into your browser:<br>
-              <a href="${domain}/verifyEmail?token=${hashedToken}" style="color: #0066cc; word-break: break-all;">
-                ${domain}/verifyEmail?token=${hashedToken}
+              <a href="${actionUrl}" style="color: #0066cc; word-break: break-all;">
+                ${actionUrl}
               </a>
             </p>
           </div>

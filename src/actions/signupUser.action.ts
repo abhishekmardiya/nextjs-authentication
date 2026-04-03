@@ -1,9 +1,9 @@
 "use server";
 
-import bcryptjs from "bcryptjs";
 import { connect } from "@/dbConfig/dbConfig";
 import { EmailType } from "@/helpers/enums";
 import { sendEmail } from "@/helpers/mailer";
+import { hashPassword, MIN_PASSWORD_LENGTH } from "@/helpers/password";
 import User from "@/model/userModel";
 
 export interface SignupUserResponse {
@@ -24,6 +24,14 @@ export async function signupUser(
 
     const { username, email, password } = user;
 
+    if (password.length < MIN_PASSWORD_LENGTH) {
+      return {
+        success: false,
+        message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`,
+        savedUser: null,
+      };
+    }
+
     const foundUser = await User.findOne({ email });
 
     if (foundUser) {
@@ -34,9 +42,7 @@ export async function signupUser(
       };
     }
 
-    // hashing
-    const salt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(password, salt);
+    const hashedPassword = await hashPassword(password);
 
     const newUser = new User({
       username,
