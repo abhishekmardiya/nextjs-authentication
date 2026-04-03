@@ -3,7 +3,7 @@
 import { connect } from "@/dbConfig/dbConfig";
 import User from "@/model/userModel";
 
-interface VerifyEmailActionResponse {
+export interface VerifyEmailActionResponse {
   success: boolean;
   message: string;
 }

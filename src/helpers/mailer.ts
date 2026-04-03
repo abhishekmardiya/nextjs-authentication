@@ -1,4 +1,5 @@
 import bcryptjs from "bcryptjs";
+import type { SentMessageInfo } from "nodemailer";
 import nodemailer from "nodemailer";
 import User from "@/model/userModel";
 import { EmailType } from "./enums";
@@ -10,7 +11,11 @@ interface EmailParams {
   userId: string;
 }
 
-export const sendEmail = async ({ email, emailType, userId }: EmailParams) => {
+export async function sendEmail({
+  email,
+  emailType,
+  userId,
+}: EmailParams): Promise<SentMessageInfo | null> {
   try {
     // create a hashed token
     const hashedToken = await bcryptjs.hash(userId?.toString(), 10);
@@ -53,4 +58,4 @@ export const sendEmail = async ({ email, emailType, userId }: EmailParams) => {
 
     return null;
   }
-};
+}

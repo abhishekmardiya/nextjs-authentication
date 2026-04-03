@@ -6,7 +6,7 @@ import { EmailType } from "@/helpers/enums";
 import { sendEmail } from "@/helpers/mailer";
 import User from "@/model/userModel";
 
-interface SignupUserResponse {
+export interface SignupUserResponse {
   success: boolean;
   message: string;
   savedUser: {

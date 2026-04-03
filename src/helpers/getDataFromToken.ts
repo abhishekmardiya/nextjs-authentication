@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
-export const getDataFromToken = async () => {
+export async function getDataFromToken(): Promise<string | null> {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
@@ -20,4 +20,4 @@ export const getDataFromToken = async () => {
   } catch {
     return null;
   }
-};
+}

@@ -1,10 +1,10 @@
 import { EmailType } from "./enums";
 
-export const getMailTemplate = (
+export function getMailTemplate(
   emailType: EmailType,
   domain: string,
   hashedToken: string,
-) => {
+): string {
   return `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 10px; background-color: #fafafa;">
           <div style="background-color: #ffffff; padding: 30px; border-radius: 8px; text-align: center;">
@@ -34,4 +34,4 @@ export const getMailTemplate = (
           </p>
         </div>
       `;
-};
+}

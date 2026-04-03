@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-interface LogoutUserResponse {
+export interface LogoutUserResponse {
   success: boolean;
   message: string;
 }

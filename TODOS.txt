@@ -1,4 +1,2 @@
 - Implement 'Forgot Password' and 'Reset Password' features
 - Display a prompt requesting email verification after successful user registration
-- add return type to all actions and utils
-- make all named exports

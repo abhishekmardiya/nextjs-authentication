@@ -4,7 +4,7 @@ import { connect } from "@/dbConfig/dbConfig";
 import { getDataFromToken } from "@/helpers/getDataFromToken";
 import User from "@/model/userModel";
 
-interface GetMeResponse {
+export interface GetMeResponse {
   success: boolean;
   message: string;
   data: {
@@ -16,7 +16,7 @@ interface GetMeResponse {
   } | null;
 }
 
-export const getMe = async (): Promise<GetMeResponse> => {
+export async function getMe(): Promise<GetMeResponse> {
   try {
     await connect();
 
@@ -45,4 +45,4 @@ export const getMe = async (): Promise<GetMeResponse> => {
 
     return { success: false, message: "Something went wrong!", data: null };
   }
-};
+}

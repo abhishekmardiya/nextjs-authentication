@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { connect } from "@/dbConfig/dbConfig";
 import User from "@/model/userModel";
 
-interface LoginUserResponse {
+export interface LoginUserResponse {
   success: boolean;
   message: string;
 }

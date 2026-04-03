@@ -3,7 +3,7 @@
 import { connect } from "@/dbConfig/dbConfig";
 import User from "@/model/userModel";
 
-interface GetUserByIdResponse {
+export interface GetUserByIdResponse {
   success: boolean;
   message: string;
   data: {
