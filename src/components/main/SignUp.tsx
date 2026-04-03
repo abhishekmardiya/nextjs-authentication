@@ -20,8 +20,11 @@ export const SignUp = () => {
       if (!success) {
         toast.error(message);
       } else {
-        toast.success("Signup Successful");
-        router.push("/login");
+        toast.success(
+          "Account created. Check your email and open the verification link we sent you.",
+          { duration: 6500 },
+        );
+        router.push("/login?verify=pending");
       }
     } catch (err: unknown) {
       if (err instanceof Error) {

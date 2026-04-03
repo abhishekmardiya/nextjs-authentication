@@ -1,2 +1,1 @@
 - Implement 'Forgot Password' and 'Reset Password' features
-- Display a prompt requesting email verification after successful user registration

@@ -1,12 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { loginUser } from "@/actions/loginUser.action";
 
 export const Login = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const verifyEmailPending = searchParams.get("verify") === "pending";
   const [user, setUser] = useState({ email: "", password: "" });
   const [isBtnDisabled, setIsBtnDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -40,6 +42,16 @@ export const Login = () => {
 
   return (
     <form onSubmit={onLogin} className="flex flex-col gap-4">
+      {verifyEmailPending ? (
+        <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-950">
+          <p>
+            <span className="font-medium">Verify your email.</span> We sent a
+            link to your inbox—open it to confirm your address, then sign in
+            below.
+          </p>
+        </div>
+      ) : null}
+
       <div className="flex flex-col gap-1.5">
         <label htmlFor="email" className="text-sm font-medium text-gray-700">
           Email
